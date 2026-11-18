@@ -1,0 +1,62 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{mathptmx}
+\renewcommand{\figurename}{Figura}
+\renewcommand{\tablename}{Tabela}
+\usepackage[a4paper,left=3cm,right=3cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage[square,authoryear]{natbib}
+\usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=black]{hyperref}
+\usepackage{url}
+\usepackage{caption}
+\captionsetup{font=small,labelfont=bf,labelsep=period,justification=centering}
+\usetikzlibrary{positioning,arrows.meta}
+
+\setlength{\parindent}{1.0cm}
+\setlength{\parskip}{0pt}
+\renewcommand{\baselinestretch}{1.0}
+
+% títulos de seção no estilo SBC (negrito, sem serifa especial)
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{0pt}{-14pt plus -2pt minus -1pt}{6pt}{\normalfont\large\bfseries}}
+\renewcommand{\subsection}{\@startsection{subsection}{2}{0pt}{-10pt plus -2pt minus -1pt}{4pt}{\normalfont\normalsize\bfseries}}
+\makeatother
+
+% resumo e abstract no estilo SBC (itálico, recuado)
+\newenvironment{resumobloco}[1]
+  {\begin{list}{}{\setlength{\leftmargin}{0.8cm}\setlength{\rightmargin}{0.8cm}\setlength{\itemindent}{0pt}\setlength{\listparindent}{0pt}}
+   \item[]\small\itshape\textbf{#1.}\ }
+  {\end{list}}
+
+\theoremstyle{plain}
+\newtheorem{lema}{Lema}
+\newtheorem{teorema}{Teorema}
+\theoremstyle{definition}
+\newtheorem*{prova}{Demonstração}
+
+% citações no formato do Trabalho 1: [Autor et al. 2002]
+\renewcommand{\cite}{\citep}
+\bibpunct[, ]{[}{]}{;}{a}{}{,}
+\algrenewcommand\algorithmicrequire{\textbf{Entrada:}}
+\algrenewcommand\algorithmicensure{\textbf{Saída:}}
+\algrenewcommand\algorithmicif{\textbf{se}}
+\algrenewcommand\algorithmicthen{\textbf{então}}
+\algrenewcommand\algorithmicfor{\textbf{para}}
+\algrenewcommand\algorithmicdo{\textbf{faça}}
+\algrenewcommand\algorithmicreturn{\textbf{devolva}}
+\algrenewcommand\algorithmicwhile{\textbf{enquanto}}
+\algrenewcommand\algorithmicelse{\textbf{senão}}
+\algrenewcommand\algorithmicend{\textbf{fim}}
+\algrenewcommand\algorithmicforall{\textbf{para todo}}
+\algrenewtext{EndIf}{\algorithmicend\ \algorithmicif}
+\algrenewtext{EndFor}{\algorithmicend\ \algorithmicfor}
+\algrenewtext{EndWhile}{\algorithmicend\ \algorithmicwhile}
+\algrenewtext{EndProcedure}{\algorithmicend\ \algorithmicprocedure}
+\renewcommand{\algorithmicprocedure}{\textbf{procedimento}}
+\floatname{algorithm}{Algoritmo}

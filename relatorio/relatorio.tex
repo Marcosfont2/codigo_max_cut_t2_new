@@ -1,0 +1,27 @@
+\input{preambulo}
+\begin{document}
+\begin{center}
+{\Large\bfseries Corte Máximo: Algoritmos Exatos por Branch-and-Bound\\ e Programação Dinâmica sobre a Largura de Caminho}\\[10pt]
+{\bfseries Eduardo Marinho$^1$, Marcos Fontes$^1$}\\[6pt]
+$^1$Centro de Ciências Exatas e da Terra\\
+Departamento de Informática e Matemática Aplicada (DIMAp)\\
+Universidade Federal do Rio Grande do Norte (UFRN) -- Natal, RN -- Brasil\\
+DIM0605 -- Projeto e Análise de Algoritmos -- Prof.\ Sílvia Maia\\
+Novembro de 2026
+\end{center}
+\vspace{6pt}
+\begin{resumobloco}{Abstract}
+This paper presents two exact algorithms for the Maximum Cut problem: a Branch-and-Bound with an incrementally maintained upper bound, initialized with the greedy local-search heuristic of our previous work, and a dynamic program over the frontier of a vertex ordering, whose cost is exponential only in the width of that frontier. Both are proved correct and were validated against brute force on 3,000 small random graphs. On 12 instances of 100 to 100,002 vertices, with a 15-minute limit per algorithm, the dynamic program computed the optimum of 7 of them, including two toroidal grids with $\pm1$ weights of about 100,000 vertices (0.6 s and 9.2 s), while Branch-and-Bound proved optimality for a single 100-vertex instance and reached the time limit on the other nine after more than $3\times10^{10}$ nodes, because its root bound stays 18--88\% above the final value. With the optima at hand, the previous heuristic reaches 77--79\% of the optimum on toroidal grids from 2,000 to 100,000 vertices and 83--96\% on small sparse random graphs.
+\end{resumobloco}
+\vspace{8pt}
+\begin{resumobloco}{Resumo}
+Este trabalho apresenta dois algoritmos exatos para o problema do Corte Máximo: um Branch-and-Bound com limitante superior mantido de forma incremental e inicializado com a heurística gulosa com busca local do trabalho anterior, e uma programação dinâmica sobre a fronteira de uma ordem dos vértices, cujo custo é exponencial apenas na largura dessa fronteira. Ambos têm prova de correção e foram validados contra força bruta em 3\,000 grafos aleatórios pequenos. Em 12 instâncias de 100 a 100\,002 vértices, com limite de 15 minutos por algoritmo, a programação dinâmica calculou o ótimo de 7 delas, incluindo duas grades toroidais com pesos $\pm1$ de cerca de 100 mil vértices (0,6\,s e 9,2\,s), enquanto o Branch-and-Bound provou a otimalidade de uma única instância de 100 vértices e atingiu o limite de tempo nas outras nove, depois de mais de $3\times10^{10}$ nós, porque o limitante da raiz fica de 18 a 88\% acima do valor final. Com os ótimos em mãos, a heurística do trabalho anterior obtém de 77 a 79\% do ótimo nas grades toroidais de 2\,000 a 100 mil vértices e de 83 a 96\% em grafos aleatórios esparsos pequenos.
+\end{resumobloco}
+\vspace{4pt}
+\input{secao_1}
+\input{secoes_2_a_5}
+\input{secao_6}
+\input{secao_7_8}
+\renewcommand{\refname}{Referências}
+\input{referencias}
+\end{document}

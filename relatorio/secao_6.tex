@@ -1,0 +1,60 @@
+\section{Instâncias e Metodologia}\label{sec:instancias}
+
+\subsection{Por que não usamos o G-set inteiro}
+
+O custo da programação dinâmica é $2^{w}$, e $w$ cresce com o tamanho para grafos sem estrutura. A Tabela~\ref{tab:largT1} mostra que, para as instâncias do Trabalho~1, a melhor ordem encontrada pelo guloso (5 tentativas) tem fronteira de 41 no G32 e acima de 60 nas demais (o programa desiste a esse ponto), longe do limite de 26 da implementação, já que a tabela teria $2^{41}$ entradas ou mais. Portanto, o G-set não é viável para a programação dinâmica, e o Branch-and-Bound, como veremos, também não prova otimalidade nesses tamanhos. Isso não significa que as instâncias não possam ser resolvidas por métodos mais fortes, e sim que estão fora do alcance do que implementamos. Mesmo assim, incluímos o G32 e o G57 no experimento para observar o que o Branch-and-Bound faz em 15 minutos a partir da heurística do Trabalho~1.
+
+\input{tab_largT1}
+
+\subsection{Instâncias escolhidas}
+
+Escolhemos 12 instâncias, em três grupos (Tabela~\ref{tab:familias}). O grupo A reúne grafos aleatórios esparsos ($m=2n$, grau médio 4, como a R100k do Trabalho~1), pequenos o bastante para o ótimo ser calculado. O grupo B reúne grades toroidais com pesos $\pm1$ cujo lado curto $L$ é pequeno; a largura da programação dinâmica é $2L+1$ e não depende do comprimento, de modo que o ótimo pode ser calculado até com 100 mil vértices. O grupo C reúne instâncias em que a programação dinâmica é inviável (largura de 41 ou mais) e o Branch-and-Bound devolve a melhor solução encontrada em 15 minutos. Todas as instâncias e sementes estão no pacote entregue.
+
+\begin{table}[ht]\centering\footnotesize
+\caption{Instâncias do experimento. $w$: menor largura de fronteira encontrada pelo guloso (``$>$'': desistiu acima do valor indicado).}\label{tab:familias}
+\begin{tabular}{llrcl}\hline
+Grupo & Instância & $n$ & $w$ & Descrição\\\hline
+A & \texttt{01\_ALE\_n100} & 100 & 21 & aleatória esparsa, pesos $+1$\\
+A & \texttt{02\_ALE\_n120} & 120 & 26 & aleatória esparsa, pesos $+1$\\
+A & \texttt{03\_PM1\_n120} & 120 & 26 & aleatória esparsa, pesos $\pm1$\\
+B & \texttt{04\_TORO\_8x250} & 2\,000 & 17 & grade toroidal $8\times250$, pesos $\pm1$\\
+B & \texttt{05\_TORO\_10x200} & 2\,000 & 21 & grade toroidal $10\times200$, pesos $\pm1$\\
+B & \texttt{06\_TORO\_5x20000} & 100\,000 & 11 & grade toroidal $5\times20000$, pesos $\pm1$\\
+B & \texttt{07\_TORO\_7x14286} & 100\,002 & 15 & grade toroidal $7\times14286$, pesos $\pm1$\\
+C & \texttt{08\_ALE\_n200} & 200 & 42 & aleatória esparsa, pesos $+1$\\
+C & \texttt{09\_PM1\_n500} & 500 & $>80$ & aleatória esparsa, pesos $\pm1$\\
+C & \texttt{10\_TORO\_20x50} & 1\,000 & 41 & grade toroidal $20\times50$, pesos $\pm1$\\
+C & \texttt{11\_G32} & 2\,000 & 41 & G-set (Trabalho 1), pesos $\pm1$\\
+C & \texttt{12\_G57} & 5\,000 & $>60$ & G-set (Trabalho 1), pesos $\pm1$\\\hline
+\end{tabular}
+\end{table}
+
+\subsection{Geradores}
+
+Usamos o gerador do Trabalho~1 e um novo, \texttt{gerador\_t2.cpp}, que produz o mesmo formato (\texttt{n m} e uma linha \texttt{u v peso} por aresta) em dois modos, ambos determinísticos para uma dada semente:
+\begin{itemize}
+  \item \texttt{aleatorio n m semente pesos}: sorteia $m$ arestas distintas entre pares aleatórios de vértices, como no Trabalho~1, com pesos todos $+1$ (\texttt{1}) ou $\pm1$ com probabilidade $1/2$ (\texttt{pm1});
+  \item \texttt{toro L C semente}: grade toroidal 2D $L\times C$ (cada vértice tem 4 vizinhos, $m=2n$), pesos $\pm1$ com probabilidade $1/2$ e rótulos dos vértices embaralhados, para que a estrutura de grade não apareça na numeração.
+\end{itemize}
+Todas as instâncias geradas usam a semente 1; as instâncias 11 e 12 são arquivos do G-set, copiados do Trabalho~1. A grade toroidal $20\times50$ (instância 10) tem a mesma largura de fronteira (41) que o G32; a coincidência com $2L+1$ para $L=20$ sugere que o G32 tenha estrutura de grade de lado curto 20, mas não verificamos isso.
+
+\subsection{Plataforma e protocolo}
+
+Os experimentos rodaram em um computador com processador Intel Core i5-9300H a 2,40\,GHz e 8\,GB de memória RAM, em execução \emph{single-thread}, sob Windows 11, com o compilador \texttt{g++} 15.1 e as opções \texttt{-std=c++17 -O2}. Os tempos são de relógio de parede (\texttt{steady\_clock}) e medem apenas o algoritmo, sem a leitura do arquivo; a busca da ordem da programação dinâmica é medida à parte e é desprezível (milissegundos). Cada instância foi executada uma única vez. O limite de tempo é de 900\,s (15 minutos) \emph{por algoritmo}: se o Branch-and-Bound estourar, o valor devolvido é o melhor encontrado até então e a otimalidade não é provada. A programação dinâmica foi executada com $w\le26$ e limite de 2\,GB de memória; ela não devolve solução parcial, ou termina com o ótimo ou não executa. O Branch-and-Bound não é executado para $n>5\,000$ (a recursão teria profundidade $n$), o que afeta apenas as instâncias 06 e 07.
+
+A heurística do Trabalho~1 está incorporada ao programa novo, mas a leitura agora ordena as listas de adjacência (para fundir arestas paralelas), o que altera o desempate da ordenação por grau. É o mesmo algoritmo, porém não idêntico bit a bit ao do Trabalho~1: no G32 ele dá 1\,170 aqui contra 1\,154 no relatório anterior, e no G57, 2\,924 contra 2\,848. Os valores desta seção usam sempre a versão incorporada ao programa novo, e os tempos da heurística não são comparáveis aos do Trabalho~1 (medidos em um chip M1).
+
+\subsection{Validação}
+
+Escrevemos um programa de validação (\texttt{validacao.cpp}) que gera 3\,000 grafos aleatórios com 1 a 16 vértices, densidades de 0 a 1 e quatro regimes de pesos (todos $+1$; $\pm1$; inteiros em $[-4,6]$, incluindo pesos nulos; inteiros positivos em $[1,9]$), e compara, em cada um, o valor ótimo obtido por força bruta com o dos dois algoritmos. Também recalcula o corte das partições devolvidas. A força bruta é usada apenas como oráculo de teste. Essa validação foi executada durante o desenvolvimento, em um ambiente Linux com \texttt{g++} 13.3 e \texttt{-O2}: 3\,000 casos, 0 falhas. Além disso, os valores ótimos das instâncias 01 a 07 obtidos em um ambiente Linux (\texttt{g++} 13.3) coincidem exatamente com os obtidos na máquina deste experimento (Seção~7), e a partição final de cada execução é sempre reavaliada pelo programa (linha \emph{Conferência} do relatório da execução).
+
+\subsection{Reprodução}
+
+O pacote entregue contém o código, as instâncias e os scripts. A partir da raiz:
+\begin{verbatim}
+bash scripts/rodar_experimentos_longos.sh 900
+python3 scripts/gerar_tabelas_figuras.py
+./exato instancias_longas/04_TORO_8x250
+\end{verbatim}
+O primeiro comando roda as 12 instâncias (15 minutos por algoritmo), o segundo gera tabelas e figuras a partir do CSV, e o terceiro roda uma instância (\texttt{./exato} sem argumentos abre um menu).
+As instâncias estão em \texttt{instancias\_longas/} e podem ser recriadas com \texttt{scripts/gerar\_instancias\_longas.sh}.
